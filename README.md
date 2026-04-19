@@ -239,20 +239,11 @@ DEFAULT_MODELS = [
 | HuggingFace API timeout | Check internet connection; increase timeout in `dspy.LM` |
 | Stale Supabase connection | Chatbot auto-reconnects; if persists, restart |
 
-## Performance Notes
-
-- **Query latency**: 3–8 seconds (varies with HF router load)
-- **Lightweight model inference**: <100ms CPU
-- **Memory footprint**: ~2 GB RAM (models + cache)
-- **Cost**: Free on HF Inference API; paid tier for production
-
 ## Future Improvements
 
-- [ ] Caching layer for repeated queries
-- [ ] Multi-document indexing (course catalogs, policies)
-- [ ] Batch re-ranking for higher throughput
-- [ ] Fine-tuned lightweight embeddings on bulletin domain
-- [ ] Integration with Discord/Slack for student accessibility
+- implement bilinguality
+- add referenced sources
+- add explicit vector search, keyword search and internet search
 
 ## References
 
@@ -262,10 +253,3 @@ DEFAULT_MODELS = [
 - [HuggingFace Inference API](https://huggingface.co/inference-api)
 - [BAAI/BGE Embeddings](https://huggingface.co/BAAI)
 
-## License
-
-MIT
-
----
-
-**Questions?** Check the inline documentation in each Python file for detailed explanations of modules and design decisions.
