@@ -1,0 +1,27 @@
+# requirements.txt — DKU Bulletin RAG Pipeline
+# Install with:  pip install -r requirements.txt
+# Required Python: 3.9+
+
+# ─── Core RAG Framework ──────────────────────────────────────────────────────
+dspy-ai>=2.4.0
+llama-index>=0.10.0
+llama-index-vector-stores-supabase>=0.1.0
+llama-index-embeddings-huggingface>=0.1.0
+
+# ─── Vector Database & Dependencies ──────────────────────────────────────────
+vecs>=0.4.0
+python-dotenv>=1.0.0
+pypdf>=4.0.0
+
+# ─── Embeddings & Reranking ──────────────────────────────────────────────────
+sentence-transformers>=2.5.0
+numpy>=1.24.0
+FlagEmbedding>=1.2.0
+
+# ─── Transformer Models & Tokenizers ─────────────────────────────────────────
+transformers>=4.40.0
+tokenizers>=0.15.0
+
+# ─── Optional: Alternative Reranking ─────────────────────────────────────────
+# Uncomment if using reranker_eval.py with mxbai reranker
+# mxbai-rerank>=0.1.0

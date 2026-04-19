@@ -1,0 +1,22 @@
+======================================================================================
+  LIGHTWEIGHT RETRIEVER EVAL REPORT (NO GIANT DOWNLOAD)
+  Generated: 2026-04-14 01:42
+  Setup: candidate pool 40 -> top 5
+======================================================================================
+  Queries: 10 | OK: 10
+
+── METRICS (AVERAGE OVER OK QUERIES) ───────────────────────────────────────────
+  Model                                             KC     CP    MRR    COMP    TOT(ms)
+  --------------------------------------------- ------ ------ ------ ------- ----------
+  Baseline                                       0.653  0.740  0.800   0.500       2391
+  BAAI/bge-base-en-v1.5                          0.707  0.840  1.000   0.650      18564
+  sentence-transformers/all-MiniLM-L6-v2         0.640  0.760  0.833   0.600       8361
+
+── DELTA VS BASELINE ────────────────────────────────────────────────────────────
+  Model                                              ΔKC      ΔCP     ΔMRR    ΔCOMP   ΔTOT(ms)
+  BAAI/bge-base-en-v1.5                           +0.054   +0.100   +0.200   +0.150     +16173
+  sentence-transformers/all-MiniLM-L6-v2          -0.013   +0.020   +0.033   +0.100      +5970
+
+Note: These variants rerank a baseline candidate pool; they do not require
+rebuilding your vector DB and avoid very large model downloads.
+======================================================================================
