@@ -34,6 +34,8 @@ All LLM calls route through: `https://router.huggingface.co/v1` with model `meta
 |------|---------|
 | **`ingest.py`** | One-time setup: embed the DKU Bulletin PDF and store vectors in Supabase |
 | **`data/DKU_bulletin.pdf`** | Source document (configure path in `ingest.py`) |
+| **`.env.example`** | Template for environment variables (copy to `.env`) |
+| **`.gitignore`** | Git ignore rules (excludes `.env`, logs, etc.) |
 
 ### Evaluation & Optimization
 
@@ -96,25 +98,58 @@ The large BGE-Reasoner model, while more accurate, is **impractical** due to:
 ### Prerequisites
 
 - Python 3.9+
-- `.env` file with credentials:
-  ```bash
-  SUPABASE_DB_URL=postgresql://postgres:...
-  HF_TOKEN=hf_...
-  ```
+- **Supabase Account**: Create a free Supabase project at [supabase.com](https://supabase.com)
+- **HuggingFace Account**: Get a free token at [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+- **DKU Bulletin PDF**: Place `DKU_bulletin.pdf` in the `data/` folder
 
-### Dependencies
+### Setup Steps
 
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd chatdku
+   ```
+
+2. **Create `.env` file** (copy and modify):
+   ```bash
+   cp .env.example .env  # or create manually
+   ```
+   
+   Add your credentials:
+   ```bash
+   SUPABASE_DB_URL="postgresql://postgres.[your-project-ref]:[your-password]@aws-1-us-east-1.pooler.supabase.com:5432/postgres"
+   HF_TOKEN="hf_your_token_here"
+   ```
+
+   **⚠️ Important:** Never commit `.env` to git (it's in `.gitignore`)
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### For New GitHub Users
+
+**Can you just change the Supabase URL and run `ingest.py`?**
+
+**Short answer: No, you need to set up your own Supabase database first.**
+
+**Why?** The current `.env` file contains credentials for a specific Supabase project that won't work for you. Here's what you need to do:
+
+1. **Create your own Supabase project** at [supabase.com](https://supabase.com)
+2. **Enable pgvector extension** in your Supabase dashboard (Database → Extensions)
+3. **Get your database URL** from Project Settings → Database → Connection string
+4. **Update `.env`** with your new Supabase URL
+5. **Get your own HF_TOKEN** from HuggingFace
+6. **Ensure you have the DKU bulletin PDF** in `data/DKU_bulletin.pdf`
+
+**Then you can run:**
 ```bash
-pip install -r requirements.txt
+python ingest.py  # Embeds and stores vectors in YOUR Supabase
+python dspy_chatbot_compression.py  # Runs the chatbot
 ```
 
-This installs:
-- **DSPy** (composable AI workflows)
-- **LlamaIndex** (RAG orchestration)
-- **Supabase vector store** (pgvector backend)
-- **Sentence-Transformers** (lightweight embeddings)
-- **HuggingFace** client
-- **Transformers & Tokenizers** (model loading)
+**Note:** The embedding process (~130 MB model download) and vector storage happen in your Supabase database, so each user needs their own setup.
 
 ## Quick Start
 
@@ -239,6 +274,13 @@ DEFAULT_MODELS = [
 | HuggingFace API timeout | Check internet connection; increase timeout in `dspy.LM` |
 | Stale Supabase connection | Chatbot auto-reconnects; if persists, restart |
 
+## Performance Notes
+
+- **Query latency**: 3–8 seconds (varies with HF router load)
+- **Lightweight model inference**: <100ms CPU
+- **Memory footprint**: ~2 GB RAM (models + cache)
+- **Cost**: Free on HF Inference API; paid tier for production
+
 ## Future Improvements
 
 - implement bilinguality
@@ -252,4 +294,3 @@ DEFAULT_MODELS = [
 - [Sentence-Transformers](https://www.sbert.net/)
 - [HuggingFace Inference API](https://huggingface.co/inference-api)
 - [BAAI/BGE Embeddings](https://huggingface.co/BAAI)
-
